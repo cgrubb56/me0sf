@@ -1,0 +1,33 @@
+import random
+import math
+import numpy as np
+
+ly0_vec =[2,3,3,3,3,3,4,8]
+ly1_vec =[2,3,5,3,3,4,2,8]
+ly2_vec =[2,2,2,3,3,3,13,11]
+ly3_vec =[0,2,2,4,4,3,5,7]
+ly4_vec =[2,3,3,3,3,4,2,8]
+ly5_vec =[2,3,3,3,3,3,4,8]
+
+#generate random vec sizes for different layers
+#generate random values for different layer vecs
+ly0_s=random.choice(ly0_vec)
+ly1_s=random.choice(ly1_vec)
+ly2_s=random.choice(ly2_vec)
+ly3_s=random.choice(ly3_vec)
+ly4_s=random.choice(ly4_vec)
+ly5_s=random.choice(ly5_vec)
+
+ly0_x=np.random.randint(2,size=ly0_s)
+ly1_x=np.random.randint(2,size=ly1_s)
+ly2_x=np.random.randint(2,size=ly2_s)
+ly3_x=np.random.randint(2,size=ly3_s)
+ly4_x=np.random.randint(2,size=ly4_s)
+ly5_x=np.random.randint(2,size=ly5_s)
+
+print(ly0_x)
+print(ly1_x)
+print(ly2_x)
+print(ly3_x)
+print(ly4_x)
+print(ly5_x)
