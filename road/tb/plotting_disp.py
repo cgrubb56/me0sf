@@ -143,9 +143,12 @@ def plotting_disp(patlist=patlist,hits=None,fits=None,pats_found=None,width=192)
             # print(len(x_vals))
             # print(len(y_fits))
             for v in range(len(fits[z][2])):
+                if (v==len(fits[z][2])):
+                   break
                 if (x_vals[v]==0):
                     x_vals.pop(v)
                     y_fits.pop(v)
+                    v-=1
             # print('x_vals is '+str(x_vals))
             # print('y_fits is '+str(y_fits))
             # print(len(x_vals))
