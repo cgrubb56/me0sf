@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from subfunc import*
 from pat_unit_beh import process_pat
 from datadev import datadev
+import random
 from linear_reg_table import*
-from linearreg import*
 
 
 def get_mypattern(pat_id:int, patlist:'List[patdef_t]') -> patdef_t:
@@ -25,6 +25,50 @@ def get_mypattern(pat_id:int, patlist:'List[patdef_t]') -> patdef_t:
             mypattern = patlist[i]
     return mypattern
 
+def best_fit(x_data, y_data):
+    """takes in x_data and y_data to determine the values necessary for linear regression; uses linear least squares method"""
+    # eliminate data values that correlate to no hits within the mask of a layer
+    # elimination_indices = []
+    # for i in range(len(y_data)):
+    #     if y_data[i] == None:
+    #         elimination_indices.append(i)
+    # elimination_vals = []
+    # for j in range(len(elimination_indices)):
+    #     elimination_vals.append(x_data[elimination_indices[j]])
+    # x_data = set(x_data)
+    # elimination_vals = set(elimination_vals)
+    # x_data = x_data - elimination_vals
+    # x_data = list(x_data)
+    # y_data = [n for n in y_data if n != None]
+    sum_x = 0
+    sum_y = 0
+    for i in range(len(x_data)):
+        sum_x = sum_x + x_data[i]
+        sum_y = sum_y + y_data[i]
+    n = len(x_data)
+    xy_list = []
+    x_sq_list = []
+    for k in range(len(x_data)):
+        xy_list.append(x_data[k] * y_data[k])
+        x_sq_list.append(x_data[k] ** 2)
+    sum_xy = sum(xy_list)
+    sum_x_sq = sum(x_sq_list)
+    denominator = n * sum_x_sq - sum_x ** 2
+    if denominator == 0:
+        denominator = 1
+    slope = (n * sum_xy - (sum_x * sum_y)) / denominator
+    b = (sum_y - slope * sum_x) / n
+    y_fit = []
+    for j in range(len(y_data)):
+        y_fit.append(slope * x_data[j] + b)
+    slope = round(slope, 8)
+    b = round(b, 8)
+    int(slope)
+    int(b)
+    for i in range(len(y_fit)):
+        y_fit[i]=int(y_fit[i])
+
+    return slope, b, y_fit
 
 def strip2mask(ly_pat, strip):
         """takes in a given layer pattern and returns a list of integer bit masks for each layer"""
@@ -154,11 +198,15 @@ def plotting_disp(patlist=patlist,hits=None,fits=None,pats_found=None,width=192)
             # print(len(x_vals))
             # print(len(y_fits))
             plt.plot(x_vals,y_fits,'k-')
+            m=round(fits[z][0],4)
+            b=round(fits[z][1],4)
+            fits_string='y'+'='+str(m)+'x'+'+'+str(b)
+            plt.legend([fits_string])
     plt.show()
 
 #testing with pat_unit.vhd
 random.seed(56)
-for i in range(4):
+for i in range(20):
     MAX_SPAN=37
     [ly0_x,ly1_x,ly2_x,ly3_x,ly4_x,ly5_x]=datadev(MAX_SPAN=MAX_SPAN)
     [pat_id, ly_c]=process_pat(patlist=patlist,ly0_x=ly0_x,ly1_x=ly1_x,ly2_x=ly2_x,ly3_x=ly3_x,ly4_x=ly4_x,ly5_x=ly5_x,MAX_SPAN=MAX_SPAN)
